@@ -2,6 +2,7 @@ package hr.fer.prvazadacaposluzitelj.model;
 
 public class UserAddress {
     private String ipAddress;
+    private int port;
 
     public UserAddress() {
     }
@@ -14,10 +15,19 @@ public class UserAddress {
         this.ipAddress = ipAddress;
     }
 
+    public int getPort() {
+        return port;
+    }
+
+    public void setPort(int port) {
+        this.port = port;
+    }
+
     @Override
     public String toString() {
         return "UserAddress{" +
                 "ipAddress='" + ipAddress + '\'' +
+                ", port=" + port +
                 '}';
     }
 }
