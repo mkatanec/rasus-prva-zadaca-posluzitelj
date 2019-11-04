@@ -1,68 +1,70 @@
 package hr.fer.prvazadacaposluzitelj.controllers;
 
-import hr.fer.prvazadacaposluzitelj.dao.SensorDoc;
 import hr.fer.prvazadacaposluzitelj.model.Measurement;
 import hr.fer.prvazadacaposluzitelj.model.Sensor;
 import hr.fer.prvazadacaposluzitelj.model.SensorDescription;
 import hr.fer.prvazadacaposluzitelj.model.UserAddress;
 import hr.fer.prvazadacaposluzitelj.services.HaversinService;
 import hr.fer.prvazadacaposluzitelj.services.SensorService;
+import org.hibernate.annotations.common.reflection.XMethod;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @RestController
 public class PosluziteljController {
 
-    @Autowired
-    private SensorService sensorService;
+	@Autowired
+	private SensorService sensorService;
 
-    @Autowired
-    private HaversinService haversinService;
+	@Autowired
+	private HaversinService haversinService;
 
-    private static Logger logger = LoggerFactory.getLogger(PosluziteljController.class);
+	private static Logger logger = LoggerFactory.getLogger(PosluziteljController.class);
 
-    @PostMapping("/register")
-    public void register(@RequestBody SensorDescription sensorDescription) {
-        logger.info(sensorDescription.toString() + " received");
+	@PostMapping("/register")
+	public String register(@RequestBody SensorDescription sensorDescription) {
+		logger.info(sensorDescription.toString() + " received");
 
-        if (sensorService.addSensor(sensorDescription) == 0) {
-        } else {
-        }
-    }
+		int addSensorResponse = sensorService.addSensor(sensorDescription);
 
-    @GetMapping("/searchNeighbor/{username}")
-    public UserAddress searchNeighbor(@PathVariable("username") String username) {
-        logger.info("searching for " + username + "s closest neighbor");
+		if (addSensorResponse == 0) {
+			return "Added";
+		} else if (addSensorResponse == 1) {
+			return "Reconnected";
+		} else {
+			return "Already exists";
+		}
+	}
 
-        final Sensor closestSensor = haversinService.getClosestSensor(username);
+	@GetMapping("/sensor/{username}/searchNeighbor")
+	public UserAddress searchNeighbor(@PathVariable("username") String username) {
+		logger.info("searching for " + username + "s closest neighbor");
 
-        if (closestSensor != null) {
-            logger.info("closest to " + username + " is " + closestSensor.getUsername());
+		final Sensor closestSensor = haversinService.getClosestSensor(username);
 
-            UserAddress userAddress = new UserAddress();
+		if (closestSensor != null) {
+			logger.info("closest to " + username + " is " + closestSensor.getUsername());
 
-            userAddress.setIpAddress(closestSensor.getIpAddress());
-            userAddress.setPort(closestSensor.getPort());
+			UserAddress userAddress = new UserAddress();
 
-            return userAddress;
-        } else {
-            logger.info("can't find closest sensor");
+			userAddress.setIpAddress(closestSensor.getIpAddress());
+			userAddress.setPort(closestSensor.getPort());
 
-            return null;
-        }
-    }
+			return userAddress;
+		} else {
+			logger.info("can't find closest sensor");
 
-    @PostMapping("/storeMeasurements/{username}")
-    public void storeMeasurements(@PathVariable String username, @RequestBody Measurement measurement) {
-        sensorService.storeMeasurements(username, measurement);
-    }
+			return null;
+		}
+	}
+
+	@PostMapping("/sensor/{username}/storeMeasurements")
+	public void storeMeasurements(@PathVariable String username, @RequestBody Measurement measurement) {
+		sensorService.storeMeasurements(username, measurement);
+	}
 }

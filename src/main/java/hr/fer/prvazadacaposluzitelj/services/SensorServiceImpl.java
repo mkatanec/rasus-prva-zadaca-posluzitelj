@@ -73,6 +73,27 @@ public class SensorServiceImpl implements SensorService {
     public int storeMeasurements(String username, Measurement measurement) {
         Sensor sensor = sensorDoc.findAllByUsername(username).get(0);
 
+        switch (measurement.getParameter()){
+            case "Temperature":
+                sensor.setTemperature((int) measurement.getAverageValue());
+                break;
+            case "Pressure":
+                sensor.setPressure((int) measurement.getAverageValue());
+                break;
+            case "Humidity":
+                sensor.setHumidity((int) measurement.getAverageValue());
+                break;
+            case "CO":
+                sensor.setCO((int) measurement.getAverageValue());
+                break;
+            case "NO2":
+                sensor.setNO2((int) measurement.getAverageValue());
+                break;
+            case "SO2":
+                sensor.setSO2((int) measurement.getAverageValue());
+                break;
+        }
+
         sensorDoc.save(sensor);
 
         return 0;

@@ -1,6 +1,5 @@
 package hr.fer.prvazadacaposluzitelj;
 
-import hr.fer.prvazadacaposluzitelj.controllers.PosluziteljController;
 import hr.fer.prvazadacaposluzitelj.model.SensorDescription;
 import hr.fer.prvazadacaposluzitelj.model.UserAddress;
 import org.junit.Before;
@@ -14,8 +13,6 @@ import org.springframework.http.*;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.Random;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -73,9 +70,9 @@ public class PrvaZadacaPosluziteljApplicationTests {
 
     @Test
     public void searchNeighborSensor1() throws Exception {
-        final String url1 = "http://localhost:" + port + "/searchNeighbor/sensor1";
-        final String url2 = "http://localhost:" + port + "/searchNeighbor/sensor2";
-        final String url3 = "http://localhost:" + port + "/searchNeighbor/sensor3";
+        final String url1 = "http://localhost:" + port + "/sensor/sensor1/searchNeighbor";
+        final String url2 = "http://localhost:" + port + "/sensor/sensor2/searchNeighbor";
+        final String url3 = "http://localhost:" + port + "/sensor/sensor3/searchNeighbor";
         URI uri1 = new URI(url1);
         URI uri2 = new URI(url2);
         URI uri3 = new URI(url3);
