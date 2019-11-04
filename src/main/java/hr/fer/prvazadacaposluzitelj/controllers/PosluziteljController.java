@@ -6,14 +6,10 @@ import hr.fer.prvazadacaposluzitelj.model.SensorDescription;
 import hr.fer.prvazadacaposluzitelj.model.UserAddress;
 import hr.fer.prvazadacaposluzitelj.services.HaversinService;
 import hr.fer.prvazadacaposluzitelj.services.SensorService;
-import org.hibernate.annotations.common.reflection.XMethod;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @RestController
 public class PosluziteljController {
@@ -63,8 +59,13 @@ public class PosluziteljController {
 		}
 	}
 
-	@PostMapping("/sensor/{username}/storeMeasurements")
-	public void storeMeasurements(@PathVariable String username, @RequestBody Measurement measurement) {
-		sensorService.storeMeasurements(username, measurement);
+	@GetMapping("/sensor/{username}")
+	public Sensor sensor(@PathVariable("username") String username) {
+		return sensorService.findByUsername(username);
+	}
+
+	@PostMapping("/storeMeasurements")
+	public String storeMeasurements(@RequestBody Measurement measurement) {
+		return Integer.toString(sensorService.storeMeasurements(measurement));
 	}
 }

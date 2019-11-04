@@ -3,6 +3,8 @@
 /target/
 .mvn
 
+*.log
+
 .idea
 *.iws
 *.iml

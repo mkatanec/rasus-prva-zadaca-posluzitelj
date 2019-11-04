@@ -13,5 +13,5 @@ public interface SensorService {
 
     int addSensor(SensorDescription sensorDescription);
 
-    int storeMeasurements(String username, Measurement measurement);
+    int storeMeasurements(Measurement measurement);
 }

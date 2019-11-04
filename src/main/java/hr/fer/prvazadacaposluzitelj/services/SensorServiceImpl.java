@@ -70,8 +70,8 @@ public class SensorServiceImpl implements SensorService {
     }
 
     @Override
-    public int storeMeasurements(String username, Measurement measurement) {
-        Sensor sensor = sensorDoc.findAllByUsername(username).get(0);
+    public int storeMeasurements(Measurement measurement) {
+        Sensor sensor = sensorDoc.findAllByUsername(measurement.getUsername()).get(0);
 
         switch (measurement.getParameter()){
             case "Temperature":
